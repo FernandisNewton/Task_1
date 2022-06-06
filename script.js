@@ -9,9 +9,6 @@ const tag_input = document.querySelector(".tag_input");
 const task_input = document.querySelector(".task_input");
 const form_modal = document.querySelector(".form_modal");
 
-//Event listeners
-
-
 function createCard(contents, dates, tags, color, event) {
   event.preventDefault();
   const card = document.createElement("div");
@@ -52,8 +49,6 @@ button.addEventListener("click", (e) => {
     form_modal.style.visibility = "visible";
   }
 });
-
- 
 
 form_button.addEventListener("click", (e) => {
   e.preventDefault();
