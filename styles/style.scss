@@ -1,0 +1,81 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+@import "./card";
+@import "./form";
+
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+ 
+  background-color: #eeeeee;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.left_container {
+  width: 50%;
+  height: 100%;
+ 
+  display: flex;
+  flex-direction: column;
+  h1 {
+    margin: 7%;
+  }
+}
+
+.right_container {
+  @extend .left_container;
+
+}
+
+.divider {
+  height: 100%;
+  width: 2px;
+  background-color: rgb(161, 161, 161);
+  
+  align-self: center;
+}
+.task_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+
+  button {
+    margin-right: 5%;
+    height: fit-content;
+  }
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 86%;
+  overflow: scroll;
+  margin-left: 7%;
+}
+
+.btn{
+  background-color: #008cff;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  &:hover{
+    background-color: #006cc4;
+  }
+}

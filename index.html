@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <title>Task 1</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form_modal">
+        <h3>Create new task</h3>
+        <form>
+          <input
+            class="task_input"
+            type="text"
+            id="task"
+            name="task"
+            placeholder="Task name"
+          />
+          <div class="date_container">
+            <label>Color</label>
+            <input class="card_color" type="color" name="card_color" />
+            <label>Date</label>
+            <input type="date" name="date" class="date_input" />
+          </div>
+
+          <input
+            multiple
+            size="5"
+            type="text"
+            class="tag_input"
+            name="tag"
+            placeholder="Enter Tag"
+          />
+          <button class="form-button">Create task</button>
+        </form>
+      </div>
+      <div class="left_container">
+        <div class="task_header">
+          <h1>Tasks</h1>
+          <button class="btn">Create task</button>
+        </div>
+        <ul class="tasks"></ul>
+      </div>
+      <div class="divider"></div>
+      <div class="right_container">
+        <h1>Completed tasks</h1>
+        <ul class="completed_tasks"></ul>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
