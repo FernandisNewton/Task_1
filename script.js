@@ -59,6 +59,11 @@ form_button.addEventListener("click", (e) => {
     card_color.value,
     e
   );
+  task_input.value = "";
+  date_input.value = "";
+  tag_input.value = "";
+  card_color.value = "";
+
   form_modal.style.visibility = "hidden";
 });
 
