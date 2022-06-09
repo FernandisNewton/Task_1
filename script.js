@@ -9,8 +9,32 @@ const tag_input = document.querySelector(".tag_input");
 const task_input = document.querySelector(".task_input");
 const form_modal = document.querySelector(".form_modal");
 
-function createCard(contents, dates, tags, color, event) {
-  event.preventDefault();
+var data = {
+  "title": "Modal error",
+  "date": "12/03/2022",
+  "color": "#F08080",
+  "tag": ["Bug", "Design"]
+}
+
+let jsonData = [];
+
+fetch("./data.json")
+.then(response => {
+   return response.json();
+})
+.then(response => {
+  jsonData = response.data;
+  response.data.forEach((task)=>{
+     
+    createCard(task.title, task.date, task.tag, task.color)
+  })
+});
+
+  
+
+
+function createCard(contents, dates, tags, color) {
+  console.log(color);
   const card = document.createElement("div");
   card.classList.add("card");
   const card__color = document.createElement("div");
@@ -43,11 +67,14 @@ function createCard(contents, dates, tags, color, event) {
 }
 
 button.addEventListener("click", (e) => {
+
   if (form_modal.style.visibility == "visible") {
     form_modal.style.visibility = "hidden";
   } else {
     form_modal.style.visibility = "visible";
   }
+  jsonData.push(data)
+  console.log(jsonData);
 });
 
 form_button.addEventListener("click", (e) => {
@@ -71,3 +98,5 @@ function onCardClick(card) {
   card.remove();
   completed_task.appendChild(card);
 }
+
+
