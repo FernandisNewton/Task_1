@@ -14,21 +14,41 @@ const existingCompletedTasks = JSON.parse(
   localStorage.getItem("completed_tasks")
 );
 const taskData = existingTasks || [];
-const completedTaskList = existingCompletedTasks || [];
-console.log(completedTaskList);
+
 let tasks = [];
-let completed_task_data = [];
+let completed_task_data = existingCompletedTasks || [];
+
+function appendToTasks(card) {
+  task.appendChild(card);
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function appendToCompletedTasks(card) {
+  completed_task.appendChild(card);
+}
 
 taskData.forEach((existingTask) => {
   createCard(
     existingTask.title,
     existingTask.date,
     existingTask.tag,
-    existingTask.color
+    existingTask.color,
+    appendToTasks
   );
 });
 
-function createCard(contents, dates, tags, color) {
+completed_task_data.forEach((existingTask) => {
+  createCard(
+    existingTask.title,
+    existingTask.date,
+    existingTask.tag,
+    existingTask.color,
+    appendToCompletedTasks
+  );
+});
+
+function createCard(contents, dates, tags, color, appendMethod) {
   tasks.push({
     title: contents,
     date: dates,
@@ -73,11 +93,10 @@ function createCard(contents, dates, tags, color) {
       "completed_tasks",
       JSON.stringify(completed_task_data)
     );
+    console.log(completed_task_data);
   });
 
-  task.appendChild(card);
-
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+  appendMethod(card);
 }
 
 button.addEventListener("click", (e) => {
@@ -95,7 +114,7 @@ form_button.addEventListener("click", (e) => {
     date_input.value,
     [tag_input.value],
     card_color.value,
-    e
+    appendToTasks
   );
   task_input.value = "";
   date_input.value = "";
@@ -104,5 +123,3 @@ form_button.addEventListener("click", (e) => {
 
   form_modal.style.visibility = "hidden";
 });
-
-function onCardClick(card) {}
