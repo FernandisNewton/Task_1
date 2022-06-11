@@ -49,7 +49,10 @@ completed_task_data.forEach((existingTask) => {
 });
 
 function createCard(contents, dates, tags, color, appendMethod) {
+  let id = "id" + new Date().getTime();
+
   tasks.push({
+    id: id,
     title: contents,
     date: dates,
     color: color,
@@ -80,12 +83,15 @@ function createCard(contents, dates, tags, color, appendMethod) {
   card.append(tag_div);
 
   card.addEventListener("click", (event) => {
+    //On Card click
     completed_task_data.push({
+      id: id,
       title: contents,
       date: dates,
       color: color,
       tag: tags,
     });
+
     card.remove();
     completed_task.appendChild(card);
 
@@ -93,7 +99,6 @@ function createCard(contents, dates, tags, color, appendMethod) {
       "completed_tasks",
       JSON.stringify(completed_task_data)
     );
-    console.log(completed_task_data);
   });
 
   appendMethod(card);
