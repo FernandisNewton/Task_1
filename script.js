@@ -9,32 +9,32 @@ const tag_input = document.querySelector(".tag_input");
 const task_input = document.querySelector(".task_input");
 const form_modal = document.querySelector(".form_modal");
 
-var data = {
-  "title": "Modal error",
-  "date": "12/03/2022",
-  "color": "#F08080",
-  "tag": ["Bug", "Design"]
-}
+const existingTasks = JSON.parse(localStorage.getItem("tasks"));
+const existingCompletedTasks = JSON.parse(
+  localStorage.getItem("completed_tasks")
+);
+const taskData = existingTasks || [];
+const completedTaskList = existingCompletedTasks || [];
+console.log(completedTaskList);
+let tasks = [];
+let completed_task_data = [];
 
-let jsonData = [];
-
-fetch("./data.json")
-.then(response => {
-   return response.json();
-})
-.then(response => {
-  jsonData = response.data;
-  response.data.forEach((task)=>{
-     
-    createCard(task.title, task.date, task.tag, task.color)
-  })
+taskData.forEach((existingTask) => {
+  createCard(
+    existingTask.title,
+    existingTask.date,
+    existingTask.tag,
+    existingTask.color
+  );
 });
 
-  
-
-
 function createCard(contents, dates, tags, color) {
-  console.log(color);
+  tasks.push({
+    title: contents,
+    date: dates,
+    color: color,
+    tag: tags,
+  });
   const card = document.createElement("div");
   card.classList.add("card");
   const card__color = document.createElement("div");
@@ -60,21 +60,32 @@ function createCard(contents, dates, tags, color) {
   card.append(tag_div);
 
   card.addEventListener("click", (event) => {
-    onCardClick(card);
+    completed_task_data.push({
+      title: contents,
+      date: dates,
+      color: color,
+      tag: tags,
+    });
+    card.remove();
+    completed_task.appendChild(card);
+
+    localStorage.setItem(
+      "completed_tasks",
+      JSON.stringify(completed_task_data)
+    );
   });
 
   task.appendChild(card);
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 button.addEventListener("click", (e) => {
-
   if (form_modal.style.visibility == "visible") {
     form_modal.style.visibility = "hidden";
   } else {
     form_modal.style.visibility = "visible";
   }
-  jsonData.push(data)
-  console.log(jsonData);
 });
 
 form_button.addEventListener("click", (e) => {
@@ -94,9 +105,4 @@ form_button.addEventListener("click", (e) => {
   form_modal.style.visibility = "hidden";
 });
 
-function onCardClick(card) {
-  card.remove();
-  completed_task.appendChild(card);
-}
-
-
+function onCardClick(card) {}
