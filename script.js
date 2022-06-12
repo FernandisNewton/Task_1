@@ -1,4 +1,5 @@
-//Selectors
+/*********** Selectors ***********/
+
 const button = document.querySelector(".btn");
 const task = document.querySelector(".tasks");
 const completed_task = document.querySelector(".completed_tasks");
@@ -9,6 +10,8 @@ const tag_input = document.querySelector(".tag_input");
 const task_input = document.querySelector(".task_input");
 const form_modal = document.querySelector(".form_modal");
 
+/*********** Fetch existing data ***********/
+
 const existingTasks = JSON.parse(localStorage.getItem("tasks"));
 
 const existingCompletedTasks = JSON.parse(
@@ -18,26 +21,7 @@ const existingCompletedTasks = JSON.parse(
 let tasks = existingTasks || [];
 let completed_task_data = existingCompletedTasks || [];
 
-function appendToTasks(card) {
-  task.appendChild(card);
-
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function appendToCompletedTasks(card) {
-  completed_task.appendChild(card);
-}
-
-function deleteFromTask(id) {
-  tasks.splice(
-    tasks.findIndex(function (i) {
-      return i.id === id;
-    }),
-    1
-  );
-
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+/*********** Render existing data ***********/
 
 tasks.forEach((existingTask) => {
   createCard(
@@ -60,6 +44,66 @@ completed_task_data.forEach((existingTask) => {
     existingTask.id
   );
 });
+
+/*********** Event listeners ***********/
+
+button.addEventListener("click", (e) => {
+  if (form_modal.style.visibility == "visible") {
+    form_modal.style.visibility = "hidden";
+  } else {
+    form_modal.style.visibility = "visible";
+  }
+});
+
+form_button.addEventListener("click", (e) => {
+  e.preventDefault();
+  let id = "id" + new Date().getTime();
+
+  tasks.push({
+    id: id,
+    title: task_input.value,
+    date: date_input.value,
+    color: card_color.value,
+    tag: [tag_input.value],
+  });
+  createCard(
+    task_input.value,
+    date_input.value,
+    [tag_input.value],
+    card_color.value,
+    appendToTasks,
+    id
+  );
+
+  task_input.value = "";
+  date_input.value = "";
+  tag_input.value = "";
+  card_color.value = "";
+
+  form_modal.style.visibility = "hidden";
+});
+
+/*********** Methods ***********/
+
+function appendToTasks(card) {
+  task.appendChild(card);
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function appendToCompletedTasks(card) {
+  completed_task.appendChild(card);
+}
+
+function deleteFromTask(id) {
+  tasks.splice(
+    tasks.findIndex(function (i) {
+      return i.id === id;
+    }),
+    1
+  );
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 function createCard(contents, dates, tags, color, appendMethod, id) {
   const card = document.createElement("div");
@@ -97,7 +141,7 @@ function createCard(contents, dates, tags, color, appendMethod, id) {
     });
 
     card.remove();
-    completed_task.appendChild(card);
+    completed_task.appendChild(card.cloneNode(true));
 
     localStorage.setItem(
       "completed_tasks",
@@ -108,39 +152,3 @@ function createCard(contents, dates, tags, color, appendMethod, id) {
 
   appendMethod(card);
 }
-
-button.addEventListener("click", (e) => {
-  if (form_modal.style.visibility == "visible") {
-    form_modal.style.visibility = "hidden";
-  } else {
-    form_modal.style.visibility = "visible";
-  }
-});
-
-form_button.addEventListener("click", (e) => {
-  e.preventDefault();
-  let id = "id" + new Date().getTime();
-
-  tasks.push({
-    id: id,
-    title: task_input.value,
-    date: date_input.value,
-    color: card_color.value,
-    tag: [tag_input.value],
-  });
-  createCard(
-    task_input.value,
-    date_input.value,
-    [tag_input.value],
-    card_color.value,
-    appendToTasks,
-    id
-  );
-
-  task_input.value = "";
-  date_input.value = "";
-  tag_input.value = "";
-  card_color.value = "";
-
-  form_modal.style.visibility = "hidden";
-});
