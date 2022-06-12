@@ -10,12 +10,12 @@ const task_input = document.querySelector(".task_input");
 const form_modal = document.querySelector(".form_modal");
 
 const existingTasks = JSON.parse(localStorage.getItem("tasks"));
+
 const existingCompletedTasks = JSON.parse(
   localStorage.getItem("completed_tasks")
 );
-const taskData = existingTasks || [];
 
-let tasks = [];
+let tasks = existingTasks || [];
 let completed_task_data = existingCompletedTasks || [];
 
 function appendToTasks(card) {
@@ -28,13 +28,25 @@ function appendToCompletedTasks(card) {
   completed_task.appendChild(card);
 }
 
-taskData.forEach((existingTask) => {
+function deleteFromTask(id) {
+  tasks.splice(
+    tasks.findIndex(function (i) {
+      return i.id === id;
+    }),
+    1
+  );
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+tasks.forEach((existingTask) => {
   createCard(
     existingTask.title,
     existingTask.date,
     existingTask.tag,
     existingTask.color,
-    appendToTasks
+    appendToTasks,
+    existingTask.id
   );
 });
 
@@ -44,20 +56,12 @@ completed_task_data.forEach((existingTask) => {
     existingTask.date,
     existingTask.tag,
     existingTask.color,
-    appendToCompletedTasks
+    appendToCompletedTasks,
+    existingTask.id
   );
 });
 
-function createCard(contents, dates, tags, color, appendMethod) {
-  let id = "id" + new Date().getTime();
-
-  tasks.push({
-    id: id,
-    title: contents,
-    date: dates,
-    color: color,
-    tag: tags,
-  });
+function createCard(contents, dates, tags, color, appendMethod, id) {
   const card = document.createElement("div");
   card.classList.add("card");
   const card__color = document.createElement("div");
@@ -99,6 +103,7 @@ function createCard(contents, dates, tags, color, appendMethod) {
       "completed_tasks",
       JSON.stringify(completed_task_data)
     );
+    deleteFromTask(id);
   });
 
   appendMethod(card);
@@ -114,13 +119,24 @@ button.addEventListener("click", (e) => {
 
 form_button.addEventListener("click", (e) => {
   e.preventDefault();
+  let id = "id" + new Date().getTime();
+
+  tasks.push({
+    id: id,
+    title: task_input.value,
+    date: date_input.value,
+    color: card_color.value,
+    tag: [tag_input.value],
+  });
   createCard(
     task_input.value,
     date_input.value,
     [tag_input.value],
     card_color.value,
-    appendToTasks
+    appendToTasks,
+    id
   );
+
   task_input.value = "";
   date_input.value = "";
   tag_input.value = "";
