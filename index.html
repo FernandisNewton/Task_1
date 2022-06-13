@@ -18,12 +18,13 @@
             id="task"
             name="task"
             placeholder="Task name"
+            required
           />
           <div class="date_container">
             <label>Color</label>
             <input class="card_color" type="color" name="card_color" />
             <label>Date</label>
-            <input type="date" name="date" class="date_input" />
+            <input type="date" required name="date" class="date_input" />
           </div>
 
           <input
@@ -42,12 +43,12 @@
           <h1>Tasks</h1>
           <button class="btn">Create task</button>
         </div>
-        <ul class="tasks"></ul>
+        <ul class="cardContainer tasks"></ul>
       </div>
       <div class="divider"></div>
       <div class="right_container">
         <h1>Completed tasks</h1>
-        <ul class="completed_tasks"></ul>
+        <ul class="cardContainer completed_tasks"></ul>
       </div>
     </div>
     <script src="./script.js"></script>

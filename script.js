@@ -9,6 +9,12 @@ const date_input = document.querySelector(".date_input");
 const tag_input = document.querySelector(".tag_input");
 const task_input = document.querySelector(".task_input");
 const form_modal = document.querySelector(".form_modal");
+const cardContainer = document.querySelectorAll(".cardContainer");
+
+/*********** Variables ***********/
+
+let draggedCard = null;
+let draggedCardInfo = {};
 
 /*********** Fetch existing data ***********/
 
@@ -47,6 +53,28 @@ completed_task_data.forEach((existingTask) => {
 
 /*********** Event listeners ***********/
 
+for (let i = 0; i < cardContainer.length; i++) {
+  const container = cardContainer[i];
+  container.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
+
+  container.addEventListener("dragenter", function (e) {
+    e.preventDefault();
+  });
+
+  container.addEventListener("drop", function (e) {
+    this.appendChild(draggedCard);
+    console.log(container.className);
+    completed_task_data.push(draggedCardInfo);
+    localStorage.setItem(
+      "completed_tasks",
+      JSON.stringify(completed_task_data)
+    );
+    deleteFromTask(draggedCardInfo.id);
+  });
+}
+
 button.addEventListener("click", (e) => {
   if (form_modal.style.visibility == "visible") {
     form_modal.style.visibility = "hidden";
@@ -57,30 +85,35 @@ button.addEventListener("click", (e) => {
 
 form_button.addEventListener("click", (e) => {
   e.preventDefault();
-  let id = "id" + new Date().getTime();
+  //Generate unique ID
+  if (task_input.value && date_input.value) {
+    let id = "id" + new Date().getTime();
 
-  tasks.push({
-    id: id,
-    title: task_input.value,
-    date: date_input.value,
-    color: card_color.value,
-    tag: [tag_input.value],
-  });
-  createCard(
-    task_input.value,
-    date_input.value,
-    [tag_input.value],
-    card_color.value,
-    appendToTasks,
-    id
-  );
+    tasks.push({
+      id: id,
+      title: task_input.value,
+      date: date_input.value,
+      color: card_color.value,
+      tag: [tag_input.value],
+    });
+    createCard(
+      task_input.value,
+      date_input.value,
+      [tag_input.value],
+      card_color.value,
+      appendToTasks,
+      id
+    );
 
-  task_input.value = "";
-  date_input.value = "";
-  tag_input.value = "";
-  card_color.value = "";
+    task_input.value = "";
+    date_input.value = "";
+    tag_input.value = "";
+    card_color.value = "";
 
-  form_modal.style.visibility = "hidden";
+    form_modal.style.visibility = "hidden";
+  } else {
+    console.log("Enter value");
+  }
 });
 
 /*********** Methods ***********/
@@ -122,6 +155,7 @@ function createCard(contents, dates, tags, color, appendMethod, id) {
   card.append(card__color, card__content);
   const tag_div = document.createElement("div");
   tag_div.classList.add("tag_div");
+
   tags.forEach((tag) => {
     const tag_element = document.createElement("div");
     tag_element.classList.add("tag");
@@ -130,24 +164,28 @@ function createCard(contents, dates, tags, color, appendMethod, id) {
   });
   card.append(tag_div);
 
-  card.addEventListener("click", (event) => {
-    //On Card click
-    completed_task_data.push({
+  card.setAttribute("draggable", true);
+
+  card.addEventListener("dragstart", function (e) {
+    draggedCard = card;
+    draggedCardInfo = {
       id: id,
       title: contents,
       date: dates,
       color: color,
       tag: tags,
-    });
+    };
+    setTimeout(function () {
+      card.style.display = "none";
+    }, 0);
+  });
 
-    card.remove();
-    completed_task.appendChild(card.cloneNode(true));
-
-    localStorage.setItem(
-      "completed_tasks",
-      JSON.stringify(completed_task_data)
-    );
-    deleteFromTask(id);
+  card.addEventListener("dragend", function () {
+    setTimeout(() => {
+      draggedCard.style.display = "block";
+      draggedCard = null;
+      draggedCardInfo = null;
+    }, 0);
   });
 
   appendMethod(card);
