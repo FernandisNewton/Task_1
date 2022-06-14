@@ -220,7 +220,6 @@ body {
           flex-direction: column;
   padding: 0;
   width: 86%;
-  overflow: scroll;
   margin-left: 7%;
 }
 
@@ -241,5 +240,6 @@ body {
 
 .cardContainer {
   height: 100%;
+  overflow: scroll;
 }
 /*# sourceMappingURL=style.css.map */
