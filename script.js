@@ -65,13 +65,22 @@ for (let i = 0; i < cardContainer.length; i++) {
 
   container.addEventListener("drop", function (e) {
     this.appendChild(draggedCard);
-    console.log(container.className);
-    completed_task_data.push(draggedCardInfo);
-    localStorage.setItem(
-      "completed_tasks",
-      JSON.stringify(completed_task_data)
-    );
-    deleteFromTask(draggedCardInfo.id);
+    if(container.className === "cardContainer completed_tasks"){
+      completed_task_data.push(draggedCardInfo);
+      localStorage.setItem(
+        "completed_tasks",
+        JSON.stringify(completed_task_data)
+      );
+      deleteFromTask(draggedCardInfo.id);
+    }else{
+      tasks.push(draggedCardInfo);
+      localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+      );
+      deleteFromCompletedTask(draggedCardInfo.id);
+    }
+   
   });
 }
 
@@ -134,6 +143,16 @@ function deleteFromTask(id) {
     1
   );
   localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function deleteFromCompletedTask(id) {
+  completed_task_data.splice(
+    completed_task_data.findIndex(function (i) {
+      return i.id === id;
+    }),
+    1
+  );
+  localStorage.setItem("completed_tasks", JSON.stringify(completed_task_data));
 }
 
 function createCard(contents, dates, tags, color, appendMethod, id) {
