@@ -86,7 +86,7 @@ button.addEventListener("click", (e) => {
 form_button.addEventListener("click", (e) => {
   e.preventDefault();
   //Generate unique ID
-  if (task_input.value && date_input.value) {
+
     let id = "id" + new Date().getTime();
 
     tasks.push({
@@ -111,9 +111,7 @@ form_button.addEventListener("click", (e) => {
     card_color.value = "";
 
     form_modal.style.visibility = "hidden";
-  } else {
-    console.log("Enter value");
-  }
+  
 });
 
 /*********** Methods ***********/
