@@ -64,6 +64,7 @@ for (let i = 0; i < cardContainer.length; i++) {
   });
 
   container.addEventListener("drop", function (e) {
+    console.log(this);
     this.appendChild(draggedCard);
     if (container.className === "cardContainer completed_tasks") {
       completed_task_data.push(draggedCardInfo);
