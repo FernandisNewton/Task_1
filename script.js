@@ -65,22 +65,18 @@ for (let i = 0; i < cardContainer.length; i++) {
 
   container.addEventListener("drop", function (e) {
     this.appendChild(draggedCard);
-    if(container.className === "cardContainer completed_tasks"){
+    if (container.className === "cardContainer completed_tasks") {
       completed_task_data.push(draggedCardInfo);
       localStorage.setItem(
         "completed_tasks",
         JSON.stringify(completed_task_data)
       );
       deleteFromTask(draggedCardInfo.id);
-    }else{
+    } else {
       tasks.push(draggedCardInfo);
-      localStorage.setItem(
-        "tasks",
-        JSON.stringify(tasks)
-      );
+      localStorage.setItem("tasks", JSON.stringify(tasks));
       deleteFromCompletedTask(draggedCardInfo.id);
     }
-   
   });
 }
 
@@ -96,31 +92,30 @@ form_button.addEventListener("click", (e) => {
   e.preventDefault();
   //Generate unique ID
 
-    let id = "id" + new Date().getTime();
+  let id = "id" + new Date().getTime();
 
-    tasks.push({
-      id: id,
-      title: task_input.value,
-      date: date_input.value,
-      color: card_color.value,
-      tag: [tag_input.value],
-    });
-    createCard(
-      task_input.value,
-      date_input.value,
-      [tag_input.value],
-      card_color.value,
-      appendToTasks,
-      id
-    );
+  tasks.push({
+    id: id,
+    title: task_input.value,
+    date: date_input.value,
+    color: card_color.value,
+    tag: [tag_input.value],
+  });
+  createCard(
+    task_input.value,
+    date_input.value,
+    [tag_input.value],
+    card_color.value,
+    appendToTasks,
+    id
+  );
 
-    task_input.value = "";
-    date_input.value = "";
-    tag_input.value = "";
-    card_color.value = "";
+  task_input.value = "";
+  date_input.value = "";
+  tag_input.value = "";
+  card_color.value = "";
 
-    form_modal.style.visibility = "hidden";
-  
+  form_modal.style.visibility = "hidden";
 });
 
 /*********** Methods ***********/
